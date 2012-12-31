@@ -23,6 +23,7 @@ class Curl
     public $postValues = Array();
     public $method = 'GET';
     public $storeRequests = false;
+    public $pastResponses = Array();
 
     private $response = '';
     private $responseInfo = '';
@@ -30,10 +31,9 @@ class Curl
     private $headers = Array();
     private $httpCode = 0;
 
-    private $pastResponses = Array();
-
     public function __construct($address = "", $storeRequests = "")
     {
+        date_default_timezone_set("America/Chicago");
         if ($address) {
             $this->setAddress($address);
         }
@@ -130,9 +130,16 @@ class Curl
     private function saveRequest()
     {
 
-        $this->pastResponses[$this->address] = array(
+        $next_request = count($this->pastResponses);
+        $this->pastResponses[$next_request] = array(
+            "address" => $this->address,
+            "method" => $this->method,
+            "request_time" => date("Y/m/d h:i:s"),
+            "get_values" => $this->getValues,
+            "post_values" => $this->postValues,
             "response" => $this->response,
             "response_info" => $this->responseInfo,
+            "http_code" => $this->httpCode,
             "response_headers" => $this->responseHeaders
         );
         
@@ -143,10 +150,53 @@ class Curl
         return $this->pastResponses;
     }
 
+    public function setBasicAuth($un, $pw)
+    {
+        $this->setHeader("Authorization",$un.":".$pw);        
+    }
+
+    public function replayRequest($request)
+    {
+        if (is_numeric($request)) {
+
+            $replayObj = $this->pastResponses[$request];
+            $this->address = $replayObj['address'];
+            $this->method = $replayObj['method'];
+            $this->getValues = $replayObj['get_values'];
+            $this->postValues = $replayObj['post_values'];
+
+            return $this->makeRequest();
+        }
+
+    }
+
+    public function returnRequestList()
+    {
+        $returnArray = Array();
+
+        foreach ($this->pastResponses as $response) {
+            $returnArray[] = $response['address']; 
+        }
+
+        return $returnArray;
+    }
+
+    public function returnRequestListWithTimes()
+    {
+        $returnArray = Array();
+
+        foreach ($this->pastResponses as $response) {
+            $returnArray[] = $response['request_time'] . " " .$response['address']; 
+        }
+
+        return $returnArray;
+    }
+
     public function makeRequest()
     {
         // Initiate CURL object
         $ch = curl_init();
+        $this->response = "";
 
         // Define CURL options
         curl_setopt($ch, CURLOPT_URL, $this->address);
@@ -176,35 +226,102 @@ class Curl
             $result = 'ERROR -> ' . curl_errno($ch) . ': ' . curl_error($ch);
         } else {
             $this->httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-            switch($this->httpCode){
-                case 400:
-                    $result = 'ERROR -> 400 Bad Request';
-                    break;
-                case 404:
-                    $result = 'ERROR -> 404 Not Found';
-                    break;
-                case 500:
-                    $result = 'ERROR -> 500 Internal Server Error';
-                    break;
-                case 503:
-                    $result = 'ERROR -> 503 Service has been shut down';
-                    break;
-                case 504:
-                    $result = 'ERROR -> 504 Gateway timeout';
-                    break;
-                default:
-                    break;
-            }
         }
 
         // CLOSE CONNECTION
         curl_close($ch);
 
+        $this->response = $result;
+
         if ($this->storeRequests === true) {
             $this->saveRequest();
         }
+    }
 
-        $this->response = $result;
+    public function lookupHttpCode($lookUpCode = "")
+    {
+
+        $httpCodes = Array(
+            "200" => '200 OK',
+            "201" => '201 Created',
+            "202" => '202 Accepted',
+            "203" => '203 Non-Authoritative Information',
+            "204" => '204 No Content',
+            "205" => '205 Reset Content',
+            "206" => '206 Partial Content',
+            "207" => '207 Multi-Status (WebDAV; RFC 4918)',
+            "208" => '208 Already Reported (WebDAV; RFC 5842)',
+            "226" => '226 IM Used (RFC 3229)',
+            "230" => '230 Authentication Successful',
+            "300" => '300 Multiple Choices',
+            "301" => '301 Moved Permanently',
+            "302" => '302 Found',
+            "303" => '303 See Other',
+            "304" => '304 Not Modified',
+            "305" => '305 Use Proxy',
+            "306" => '306 Switch Proxy',
+            "307" => '307 Temporary Redirect',
+            "308" => '308 Permanent Redirect',
+            "400" => '400 Bad Request',
+            "401" => '401 Unauthorized',
+            "402" => '402 Payment Required',
+            "403" => '403 Forbidden',
+            "404" => '404 Not Found',
+            "405" => '405 Method Not Allowed',
+            "406" => '406 Not Acceptable',
+            "407" => '407 Proxy Authentication Required',
+            "408" => '408 Request Timeout',
+            "409" => '409 Conflict',
+            "410" => '410 Gone',
+            "411" => '411 Length Required',
+            "412" => '412 Precondition Failed',
+            "413" => '413 Request Entity Too Large',
+            "414" => '414 Request-URI Too Long',
+            "415" => '415 Unsupported Media Type',
+            "416" => '416 Requested Range Not Satisfiable',
+            "417" => '417 Expectation Failed',
+            "418" => '418 I\'m a teapot',
+            "420" => '420 Enhance Your Calm',
+            "422" => '422 Unprocessable Entity',
+            "423" => '423 Locked',
+            "424" => '424 Failed Dependency',
+            "425" => '425 Unordered Collection',
+            "426" => '426 Upgrade Required',
+            "428" => '428 Precondition Required',
+            "429" => '429 Too Many Requests',
+            "431" => '431 Request Header Fields Too Large',
+            "444" => '444 No Response',
+            "449" => '449 Retry With',
+            "450" => '450 Blocked by Windows Parental Controls',
+            "451" => '451 Unavailable For Legal Reasons',
+            "494" => '494 Request Header Too Large',
+            "495" => '495 Cert Error',
+            "496" => '496 No Cert',
+            "497" => '497 HTTP to HTTPS',
+            "499" => '499 Client Closed Request',
+            "500" => '500 Internal Server Error',
+            "501" => '501 Not Implemented',
+            "502" => '502 Bad Gateway',
+            "503" => '503 Service has been shut down',
+            "504" => '504 Gateway timeout',
+            "505" => '505 HTTP Version Not Supported',
+            "506" => '506 Variant Also Negotiates',
+            "507" => '507 Insufficient Storage',
+            "508" => '508 Loop Detected',
+            "509" => '509 Bandwidth Limit Exceeded',
+            "510" => '510 Not Extended',
+            "511" => '511 Network Authentication Required',
+            "531" => '531 Access Denied',
+            "598" => '598 Network read timeout error',
+            "599" => '599 Network connect timeout error',
+        );
+
+        if ($lookUpCode) {
+            return $httpCodes[$lookUpCode];
+        } else {
+            return $httpCodes[$this->httpCode];
+        }
+
     }
 }
 
