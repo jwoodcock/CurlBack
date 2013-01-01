@@ -251,12 +251,17 @@ class Curl
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
  
         if ($this->method === 'POST') {
-            $fields_string = '';
-            foreach($this->postValues as $key=>$value) { 
-                $fields_string .= $key.'='.$value.'&';
-            }
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
+            $fields = $this->returnPostFieldsForRequest();
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: ' . strlen($fields)));
             curl_setopt($ch, CURLOPT_POST, 1); // Set HTTP Method as POST
+        } else if ($this->method !== 'GET') {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method); 
+            if ($this->method === 'PUT') {
+                $fields = $this->returnPostFieldsForRequest();
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+                curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: ' . strlen($fields)));
+            }
         }
  
         if (count($this->headers) > 0) {
@@ -283,6 +288,15 @@ class Curl
         if ($this->storeRequests === true) {
             $this->saveRequest();
         }
+    }
+
+    private function returnPostFieldsForRequest()
+    {
+        $fields_string = '';
+        foreach($this->postValues as $key=>$value) { 
+            $fields_string .= $key.'='.$value.'&';
+        }
+        return $fields_string;
     }
 
     public function lookupHttpCode($lookUpCode = "")
