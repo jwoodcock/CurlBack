@@ -143,11 +143,11 @@ class Curl
         return $this->httpCode;
     }
 
-    public function returnRequestInfo()
+    public function returnResponseInfo()
     {
         $returnValue = array(
-            "Request Info: "=>$this->responseInfo,
-            "Request Headers: "=>$this->responseHeaders,
+            "Response Info: "=>$this->responseInfo,
+            "Response Headers: "=>$this->responseHeaders,
         );
         return $returnValue;
     }
