@@ -136,7 +136,7 @@ You can clear all request history using the resetStoredResponses() method.
     <code>
         $myRequest = new Curl('http://www.google.com',true);
         $myRequest->makeRequest();
-        $myRequest->replayRequest(0);
+        $myRequest->resetStoredResponses();
     </code>
 </pre>
 
@@ -166,7 +166,7 @@ you can change this at will using the setGlobalAccept() method.
 </pre>
 
 Also, cURLBack is setup to store and send a USER header property for authentication
-propurses. Simply use the $this->globalUser using the setGlobalUser() method.
+propurses. Simply set the $this->globalUser using the setGlobalUser() method.
  
 <pre>
     <code>
