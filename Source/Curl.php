@@ -192,6 +192,11 @@ class Curl
         return $returnArray;
     }
 
+    public function resetStoredResponses()
+    {
+        $this->pastResponses = Array();
+    }
+
     public function makeRequest()
     {
         // Initiate CURL object

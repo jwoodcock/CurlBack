@@ -55,3 +55,9 @@ $myCurl->replayRequest(1);
 
 print_r($myCurl->returnRequestList());
 print_r($myCurl->returnRequestListWithTimes());
+
+$myCurl->resetStoredResponses();
+
+print_r($myCurl->returnRequestList());
+
+echo "\n";
