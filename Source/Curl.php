@@ -24,6 +24,8 @@ class Curl
     public $method = 'GET';
     public $storeRequests = false;
     public $pastResponses = Array();
+    public $globalAccept = "application/json";
+    public $globalUser = "";
 
     private $response = '';
     private $responseInfo = '';
@@ -53,14 +55,26 @@ class Curl
         echo $this->address;
     }
 
-    public function setGetValue($name, $value)
+    public function setGetValue($name, $value = "")
     {
-        $this->getValues[$name] = $value;
+        if (is_array($name) === false) {
+            $this->getValues[$name] = $value;
+        } else {
+            foreach ($name as $key => $val) {
+                $this->getValues[$key] = $val;
+            }
+        }
     }
 
-    public function setPostValue($name, $value)
+    public function setPostValue($name, $value = "")
     {
-        $this->postValues[$name] = $value;
+        if (is_array($name) === false) {
+            $this->postValues[$name] = $value;
+        } else {
+            foreach ($name as $key => $val) {
+                $this->postValues[$key] = $val;
+            }
+        }
     }
 
     public function changeToPost()
@@ -108,6 +122,17 @@ class Curl
         return count($this->headers);
     }
 
+    public function setGlobalAccept($acceptType)
+    {
+        $this->globalAccept = $acceptType; 
+    }
+
+    public function setGlobalUser($user)
+    {
+        echo $user.'\n';
+        $this->globalUser = $user; 
+    }
+
     public function returnResponse()
     {
         return $this->response;
@@ -142,6 +167,13 @@ class Curl
             "http_code" => $this->httpCode,
             "response_headers" => $this->responseHeaders
         );
+
+        $this->getValues = array();
+        $this->postValues = array();
+        $this->httpCode = '';
+        $this->responseHeaders = '';
+        $this->responseInfo = '';
+        $this->headers = array();
         
     }
 
@@ -202,6 +234,14 @@ class Curl
         // Initiate CURL object
         $ch = curl_init();
         $this->response = "";
+
+        if ($this->globalAccept !== "") {
+            $this->setHeader("Accept",$this->globalAccept);
+        }
+
+        if ($this->globalUser !== "") {
+            $this->setHeader("User",$this->globalUser);
+        }
 
         // Define CURL options
         curl_setopt($ch, CURLOPT_URL, $this->address);

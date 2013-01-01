@@ -13,7 +13,7 @@ $addressTest->setAddress("http://www.yahoo.com");
 $addressTest->echoAddress();
 
 /* Test saving of multiple requests */
-$myCurl = new Curl("http://api.shoutpay.com/authorize",true);
+$myCurl = new Curl("http://www.facebook.com",true);
 echo "\n";
 $myCurl->echoAddress();
 
