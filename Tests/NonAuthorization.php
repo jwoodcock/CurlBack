@@ -5,7 +5,9 @@
  *
  */
 
-include "./Source/Curl.php";
+include "./Source/Kite/Curl.php";
+
+use Kite\Curl;
 
 /* Test setting address through function and Printing */
 $addressTest = new Curl();

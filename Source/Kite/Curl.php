@@ -15,6 +15,8 @@
  * 
  */
 
+namespace Kite;
+
 class Curl
 {
 
