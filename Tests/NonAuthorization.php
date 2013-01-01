@@ -5,7 +5,7 @@
  *
  */
 
-include "./Source/Kite/CurlBack/Curl.php";
+require './vendor/autoload.php';
 
 use Kite\CurlBack\Curl;
 
