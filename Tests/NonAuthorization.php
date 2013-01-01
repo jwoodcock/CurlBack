@@ -5,6 +5,8 @@
  *
  */
 
+date_default_timezone_set("America/Chicago");
+
 require './vendor/autoload.php';
 
 use Kite\CurlBack\Curl;
