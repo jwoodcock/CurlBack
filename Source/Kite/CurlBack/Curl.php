@@ -15,7 +15,7 @@
  * 
  */
 
-namespace Kite;
+namespace Kite\CurlBack;
 
 class Curl
 {

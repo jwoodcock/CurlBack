@@ -14,7 +14,7 @@ the response.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com');
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com');
         $myRequest->makeRequest();
         print_r($myRequest->getResponse());
     </code>
@@ -24,7 +24,7 @@ You can easily add GET variables one by one or via an array.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com');
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com');
         $myRequest->setGetValue("variable","value");
         $myRequest->makeRequest();
         print_r($myRequest->getResponse());
@@ -33,7 +33,7 @@ You can easily add GET variables one by one or via an array.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com');
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com');
         $getValues = array(
             "variable" => "value",
             "variable2" => "value,
@@ -71,7 +71,7 @@ each request you make.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com',true);
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com',true);
         $myRequest->makeRequest();
         print_r($myRequest->returnSavedRequests());
     </code>
@@ -91,7 +91,7 @@ address and then make a new request.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com',true);
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com',true);
         $myRequest->makeRequest();
         $myRequest->setAddress('http://www.yahoo.com');
         $myRequest->makeRequest();
@@ -103,7 +103,7 @@ property. To access any of it's information you will want to call it as such.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com',true);
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com',true);
         $myRequest->makeRequest();
         $myRequest->setAddress('http://www.yahoo.com');
         $myRequest->makeRequest();
@@ -120,7 +120,7 @@ You can replay any previous saved request using the replayRequest() method.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com',true);
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com',true);
         $myRequest->makeRequest();
         $myRequest->replayRequest(0);
     </code>
@@ -134,7 +134,7 @@ You can clear all request history using the resetStoredResponses() method.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com',true);
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com',true);
         $myRequest->makeRequest();
         $myRequest->replayRequest(0);
     </code>
@@ -148,7 +148,7 @@ You can also set HEADERs to the cURLBack object using the setHeader() method.
 
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com',true);
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com',true);
         $myRequest->setHeader("Content-type","application/json");
         $myRequest->makeRequest();
     </code>
@@ -159,7 +159,7 @@ you can change this at will using the setGlobalAccept() method.
  
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com',true);
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com',true);
         $myRequest->setGlobalAccept('application/html');
         $myRequest->makeRequest();
     </code>
@@ -170,7 +170,7 @@ propurses. Simply use the $this->globalUser using the setGlobalUser() method.
  
 <pre>
     <code>
-        $myRequest = new Kite\Curl('http://www.google.com',true);
+        $myRequest = new Kite\CurlBack\Curl('http://www.google.com',true);
         $myRequest->setGlobalUser('10ksd93023ksdfj0230kj23lk');
         $myRequest->makeRequest();
     </code>
