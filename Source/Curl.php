@@ -35,7 +35,6 @@ class Curl
 
     public function __construct($address = "", $storeRequests = "")
     {
-        date_default_timezone_set("America/Chicago");
         if ($address) {
             $this->setAddress($address);
         }

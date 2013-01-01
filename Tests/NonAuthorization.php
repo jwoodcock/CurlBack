@@ -5,6 +5,8 @@
  *
  */
 
+date_default_timezone_set("America/Chicago");
+
 include "./Source/Curl.php";
 
 /* Test setting address through function and Printing */
