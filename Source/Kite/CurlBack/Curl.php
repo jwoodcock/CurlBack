@@ -28,11 +28,11 @@ class Curl
     public $pastResponses = Array();
     public $globalAccept = "application/json";
     public $globalUser = "";
+    public $headers = Array();
 
     private $response = '';
     private $responseInfo = '';
     private $responseHeaders = '';
-    private $headers = Array();
     private $httpCode = 0;
 
     public function __construct($address = "", $storeRequests = "")
@@ -115,7 +115,7 @@ class Curl
 
     public function resetHeader($num, $name, $value)
     {
-        $this->headers['num'] = $name . ": " . $value;
+        $this->headers[$num] = $name . ": " . $value;
     }
 
     public function returnHeaderCount()
