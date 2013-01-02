@@ -146,10 +146,13 @@ class Curl
 
     public function returnResponseInfo()
     {
-        $returnValue = array(
-            "Response Info: "=>$this->responseInfo,
-            "Response Headers: "=>$this->responseHeaders,
-        );
+        $returnValue = '';
+        if ($this->responseInfo !== '' && $this->responseHeaders !== '') {
+            $returnValue = array(
+                "Response Info: "=>$this->responseInfo,
+                "Response Headers: "=>$this->responseHeaders,
+            );
+        }
         return $returnValue;
     }
 
