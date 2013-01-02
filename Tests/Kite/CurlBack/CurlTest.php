@@ -92,50 +92,41 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Kite\CurlBack\Curl::setPostValue
-     * @todo   Implement testSetPostValue().
      */
     public function testSetPostValue()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->setPostValue("varible","value1"));
+        $this->assertEquals(array("varible"=>"value1"), $this->curl->postValues);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::changeToPost
-     * @todo   Implement testChangeToPost().
      */
     public function testChangeToPost()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("GET",$this->curl->method);
+        $this->curl->changeToPost();
+        $this->assertEquals("POST",$this->curl->method);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::changeToPUT
-     * @todo   Implement testChangeToPUT().
      */
     public function testChangeToPUT()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("GET",$this->curl->method);
+        $this->curl->changeToPut();
+        $this->assertEquals("PUT",$this->curl->method);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::changeToDelete
-     * @todo   Implement testChangeToDelete().
      */
     public function testChangeToDelete()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("GET",$this->curl->method);
+        $this->curl->changeToDelete();
+        $this->assertEquals("DELETE",$this->curl->method);
     }
 
     /**
@@ -144,166 +135,149 @@ class CurlTest extends \PHPUnit_Framework_TestCase
      */
     public function testChangeToGet()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("GET",$this->curl->method);
+        $this->curl->changeToPut();
+        $this->assertEquals("PUT",$this->curl->method);
+        $this->curl->changeToGet();
+        $this->assertEquals("GET",$this->curl->method);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::customMethod
-     * @todo   Implement testCustomMethod().
      */
     public function testCustomMethod()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals("GET",$this->curl->method);
+        $this->curl->customMethod('JACQUES');
+        $this->assertEquals("JACQUES",$this->curl->method);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::setHeader
-     * @todo   Implement testSetHeader().
      */
     public function testSetHeader()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->setHeader('Content-type','application/html'));
+        $this->assertEquals(array('Content-type: application/html'),$this->curl->headers);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::removeHeader
-     * @todo   Implement testRemoveHeader().
      */
     public function testRemoveHeader()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->setHeader('Content-type','application/html'));
+        $this->assertEquals(array('Content-type: application/html'),$this->curl->headers);
+        $this->curl->removeHeader(0);
+        $this->assertEmpty($this->curl->headers);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::resetHeader
-     * @todo   Implement testResetHeader().
      */
     public function testResetHeader()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->setHeader('Content-type','application/html'));
+        $this->assertEquals(array('Content-type: application/html'),$this->curl->headers);
+        $this->curl->resetHeader(0,'Content-type','application/json');
+        $this->assertEquals(array('Content-type: application/json'),$this->curl->headers);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::returnHeaderCount
-     * @todo   Implement testReturnHeaderCount().
      */
     public function testReturnHeaderCount()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->setHeader('Content-type','application/html'));
+        $this->curl->setHeader('USER','Jacques');
+        $this->assertEquals(2,$this->curl->returnHeaderCount());
     }
 
     /**
      * @covers Kite\CurlBack\Curl::setGlobalAccept
-     * @todo   Implement testSetGlobalAccept().
      */
     public function testSetGlobalAccept()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals('application/json',$this->curl->globalAccept);
+        $this->curl->setGlobalAccept('application/html');
+        $this->assertEquals('application/html',$this->curl->globalAccept);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::setGlobalUser
-     * @todo   Implement testSetGlobalUser().
      */
     public function testSetGlobalUser()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->globalUser);
+        $this->curl->setGlobalUser('UserJacques');
+        $this->assertEquals('UserJacques',$this->curl->globalUser);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::returnResponse
-     * @todo   Implement testReturnResponse().
      */
     public function testReturnResponse()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->returnResponse());
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->assertNotEmpty($this->curl->returnResponse());
     }
 
     /**
      * @covers Kite\CurlBack\Curl::returnHttpCode
-     * @todo   Implement testReturnHttpCode().
      */
     public function testReturnHttpCode()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->returnHttpCode());
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->assertEquals('200',$this->curl->returnHttpCode());
     }
 
     /**
      * @covers Kite\CurlBack\Curl::returnResponseInfo
-     * @todo   Implement testReturnResponseInfo().
      */
     public function testReturnResponseInfo()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->returnResponseInfo());
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
     }
 
     /**
      * @covers Kite\CurlBack\Curl::returnSavedRequests
-     * @todo   Implement testReturnSavedRequests().
      */
     public function testReturnSavedRequests()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->pastResponses);
+        $this->curl->storeRequests = true;
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->assertNotEmpty($this->curl->pastResponses);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::setBasicAuth
-     * @todo   Implement testSetBasicAuth().
      */
     public function testSetBasicAuth()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->setBasicAuth('username','password'));
+        $this->assertEquals(array('Authorization: username:password' ),$this->curl->headers);
     }
 
     /**
      * @covers Kite\CurlBack\Curl::replayRequest
-     * @todo   Implement testReplayRequest().
      */
     public function testReplayRequest()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->pastResponses);
+        $this->curl->storeRequests = true;
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->curl->replayRequest(0);
+        $this->assertEquals(2,count($this->curl->pastResponses));
     }
 
     /**
