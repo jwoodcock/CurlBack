@@ -32,6 +32,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Kite\CurlBack\Curl', $curl);
         $this->assertEmpty($curl->address);
         $this->assertFalse($curl->storeRequests);
+        $this->assertEmpty($curl->getValues);
     }
 
     /**
@@ -82,14 +83,11 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Kite\CurlBack\Curl::setGetValue
-     * @todo   Implement testSetGetValue().
      */
     public function testSetGetValue()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->setGetValue("varible","value1"));
+        $this->assertEquals(array("varible"=>"value1"), $this->curl->getValues);
     }
 
     /**
