@@ -361,25 +361,27 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Kite\CurlBack\Curl::makeRequest
-     * @todo   Implement testMakeRequest().
      */
     public function testMakeRequest()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->makeRequest());
+        $this->curl->setAddress('http://www.google.com');
+        $response = $this->curl->makeRequest();
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertEquals("GET",$this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
     }
 
     /**
      * @covers Kite\CurlBack\Curl::lookupHttpCode
-     * @todo   Implement testLookupHttpCode().
      */
     public function testLookupHttpCode()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEquals('no value provided', $this->curl->lookupHttpCode());
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->assertEquals("200 OK", $this->curl->lookupHttpCode());
+        $this->assertEquals("204 No Content", $this->curl->lookupHttpCode(204));
     }
 }
