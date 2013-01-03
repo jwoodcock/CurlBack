@@ -236,60 +236,60 @@ class Curl
 
     public function makeRequest()
     {
-        // Initiate CURL object
-        $ch = curl_init();
-        $this->response = "";
+        if ($this->address !== "") {
+            // Initiate CURL object
+            $ch = curl_init();
+            $this->response = "";
 
-        if ($this->globalAccept !== "") {
-            $this->setHeader("Accept",$this->globalAccept);
-        }
+            if ($this->globalAccept !== "") {
+                $this->setHeader("Accept",$this->globalAccept);
+            }
 
-        if ($this->globalUser !== "") {
-            $this->setHeader("User",$this->globalUser);
-        }
+            if ($this->globalUser !== "") {
+                $this->setHeader("User",$this->globalUser);
+            }
 
-        // Define CURL options
-        curl_setopt($ch, CURLOPT_URL, $this->address);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
- 
-        if ($this->method === 'POST') {
-            $fields = $this->returnPostFieldsForRequest();
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: ' . strlen($fields)));
-            curl_setopt($ch, CURLOPT_POST, 1); // Set HTTP Method as POST
-        } else if ($this->method !== 'GET') {
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method); 
-            if ($this->method === 'PUT') {
+            // Define CURL options
+            curl_setopt($ch, CURLOPT_URL, $this->address);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+     
+            if ($this->method === 'POST') {
                 $fields = $this->returnPostFieldsForRequest();
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: ' . strlen($fields)));
+                curl_setopt($ch, CURLOPT_POST, 1); // Set HTTP Method as POST
+            } else if ($this->method !== 'GET') {
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method); 
+                if ($this->method === 'PUT') {
+                    $fields = $this->returnPostFieldsForRequest();
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+                    curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: ' . strlen($fields)));
+                }
             }
-        }
- 
-        if (count($this->headers) > 0) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers); // Set headers
-        }
+     
+            if (count($this->headers) > 0) {
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers); // Set headers
+            }
 
-        // EXECUTE
-        $result = curl_exec($ch);
-        $this->responseInfo = curl_getinfo($ch);
-        $this->responseHeaders = curl_getinfo($ch, CURLINFO_HEADER_OUT);
+            // EXECUTE
+            $result = curl_exec($ch);
+            $this->responseInfo = curl_getinfo($ch);
+            $this->responseHeaders = curl_getinfo($ch, CURLINFO_HEADER_OUT);
 
-        // CHECK FOR ERRORS
-        if (curl_errno($ch)) {
-            $result = 'ERROR -> ' . curl_errno($ch) . ': ' . curl_error($ch);
-        } else {
+            // CHECK FOR ERRORS
+            if (curl_errno($ch)) {
+                $result = 'ERROR -> ' . curl_errno($ch) . ': ' . curl_error($ch);
+            }
             $this->httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        }
 
-        // CLOSE CONNECTION
-        curl_close($ch);
+            // CLOSE CONNECTION
+            curl_close($ch);
 
-        $this->response = $result;
-
-        if ($this->storeRequests === true) {
-            $this->saveRequest();
+            $this->response = $result;
+            if ($this->storeRequests === true) {
+                $this->saveRequest();
+            }
         }
     }
 
