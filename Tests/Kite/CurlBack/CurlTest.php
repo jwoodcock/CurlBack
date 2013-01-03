@@ -96,7 +96,10 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testSetPostValue()
     {
         $this->assertEmpty($this->curl->setPostValue("varible","value1"));
-        $this->assertEquals(array("varible"=>"value1"), $this->curl->postValues);
+        $this->assertEquals(
+            array("varible"=>"value1"), 
+            $this->curl->postValues
+        );
     }
 
     /**
@@ -157,8 +160,12 @@ class CurlTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetHeader()
     {
-        $this->assertEmpty($this->curl->setHeader('Content-type','application/html'));
-        $this->assertEquals(array('Content-type: application/html'),$this->curl->headers);
+        $this->assertEmpty(
+            $this->curl->setHeader('Content-type','application/html')
+        );
+        $this->assertEquals(
+            array('Content-type: application/html'),$this->curl->headers
+        );
     }
 
     /**
@@ -166,8 +173,13 @@ class CurlTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveHeader()
     {
-        $this->assertEmpty($this->curl->setHeader('Content-type','application/html'));
-        $this->assertEquals(array('Content-type: application/html'),$this->curl->headers);
+        $this->assertEmpty(
+            $this->curl->setHeader('Content-type','application/html')
+        );
+        $this->assertEquals(
+            array('Content-type: application/html'),
+            $this->curl->headers
+        );
         $this->curl->removeHeader(0);
         $this->assertEmpty($this->curl->headers);
     }
@@ -177,10 +189,18 @@ class CurlTest extends \PHPUnit_Framework_TestCase
      */
     public function testResetHeader()
     {
-        $this->assertEmpty($this->curl->setHeader('Content-type','application/html'));
-        $this->assertEquals(array('Content-type: application/html'),$this->curl->headers);
+        $this->assertEmpty(
+            $this->curl->setHeader('Content-type','application/html')
+        );
+        $this->assertEquals(
+            array('Content-type: application/html'),
+            $this->curl->headers
+        );
         $this->curl->resetHeader(0,'Content-type','application/json');
-        $this->assertEquals(array('Content-type: application/json'),$this->curl->headers);
+        $this->assertEquals(
+            array('Content-type: application/json'),
+            $this->curl->headers
+        );
     }
 
     /**
@@ -188,7 +208,9 @@ class CurlTest extends \PHPUnit_Framework_TestCase
      */
     public function testReturnHeaderCount()
     {
-        $this->assertEmpty($this->curl->setHeader('Content-type','application/html'));
+        $this->assertEmpty(
+            $this->curl->setHeader('Content-type','application/html')
+        );
         $this->curl->setHeader('USER','Jacques');
         $this->assertEquals(2,$this->curl->returnHeaderCount());
     }
@@ -264,7 +286,10 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testSetBasicAuth()
     {
         $this->assertEmpty($this->curl->setBasicAuth('username','password'));
-        $this->assertEquals(array('Authorization: username:password' ),$this->curl->headers);
+        $this->assertEquals(
+            array('Authorization: username:password' ),
+            $this->curl->headers
+        );
     }
 
     /**
@@ -282,38 +307,56 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Kite\CurlBack\Curl::returnRequestList
-     * @todo   Implement testReturnRequestList().
      */
     public function testReturnRequestList()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $this->assertEmpty($this->curl->returnRequestList());
+        $this->curl->storeRequests = true;
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->curl->setAddress('http://www.yahoo.com');
+        $this->curl->makeRequest();
+        $this->assertEquals(
+            array("http://www.google.com","http://www.yahoo.com"),
+            $this->curl->returnRequestList()
         );
     }
 
     /**
      * @covers Kite\CurlBack\Curl::returnRequestListWithTimes
-     * @todo   Implement testReturnRequestListWithTimes().
      */
     public function testReturnRequestListWithTimes()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
+        $this->assertEmpty($this->curl->returnRequestListWithTimes());
+        $this->curl->storeRequests = true;
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $time1 = date("Y/m/d h:i:s");
+        $this->curl->setAddress('http://www.yahoo.com');
+        $this->curl->makeRequest();
+        $time2 = date("Y/m/d h:i:s");
+        $this->assertEquals(
+            array(
+                $time1 . " http://www.google.com",
+                $time2 . " http://www.yahoo.com"
+            ),
+            $this->curl->returnRequestListWithTimes()
         );
     }
 
     /**
      * @covers Kite\CurlBack\Curl::resetStoredResponses
-     * @todo   Implement testResetStoredResponses().
      */
     public function testResetStoredResponses()
     {
-        // Remove the following lines when you implement this test.
-        $this->markTestIncomplete(
-          'This test has not been implemented yet.'
-        );
+        $this->assertEmpty($this->curl->resetStoredResponses());
+        $this->curl->storeRequests = true;
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->curl->setAddress('http://www.yahoo.com');
+        $this->curl->makeRequest();
+        $this->curl->resetStoredResponses();
+        $this->assertEmpty($this->curl->pastResponses);
     }
 
     /**
