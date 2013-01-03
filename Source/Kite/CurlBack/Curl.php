@@ -35,7 +35,7 @@ class Curl
     private $responseHeaders = '';
     private $httpCode = 0;
 
-    public function __construct($address = "", $storeRequests = "")
+    public function __construct($address = "", $storeRequests = false)
     {
         if ($address) {
             $this->setAddress($address);
@@ -43,6 +43,8 @@ class Curl
 
         if ($storeRequests === true) {
             $this->storeRequests = true;
+        } else {
+            $this->storeRequests = false;
         }
     }
 
@@ -130,7 +132,6 @@ class Curl
 
     public function setGlobalUser($user)
     {
-        echo $user.'\n';
         $this->globalUser = $user; 
     }
 
