@@ -91,6 +91,20 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Kite\CurlBack\Curl::setGetValue
+     */
+    public function testSetGetValueWithArray()
+    {
+        $getValues = array(
+            'foo' => 'bar',
+            'baz' => 1,
+        );
+
+        $this->assertEmpty($this->curl->setGetValue($getValues));
+        $this->assertEquals($getValues, $this->curl->getValues);
+    }
+
+    /**
      * @covers Kite\CurlBack\Curl::setPostValue
      */
     public function testSetPostValue()
@@ -100,6 +114,20 @@ class CurlTest extends \PHPUnit_Framework_TestCase
             array("varible"=>"value1"), 
             $this->curl->postValues
         );
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::setPostValue
+     */
+    public function testSetPostValueWithArray()
+    {
+        $postValues = array(
+            'foo' => 'bar',
+            'baz' => 1,
+        );
+
+        $this->assertEmpty($this->curl->setPostValue($postValues));
+        $this->assertEquals($postValues, $this->curl->postValues);
     }
 
     /**
