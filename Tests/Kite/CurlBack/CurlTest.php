@@ -335,6 +335,19 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Kite\CurlBack\Curl::replayRequest
+     */
+    public function testReplayRequestWithNonNumeric()
+    {
+        $this->assertEmpty($this->curl->pastResponses);
+        $this->curl->storeRequests = true;
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+        $this->assertEmpty($this->curl->replayRequest('foo'));
+        $this->assertEquals(1, count($this->curl->pastResponses));
+    }
+
+    /**
      * @covers Kite\CurlBack\Curl::returnRequestList
      */
     public function testReturnRequestList()
