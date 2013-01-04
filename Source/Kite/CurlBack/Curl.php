@@ -258,7 +258,7 @@ class Curl
                 $fields = $this->returnPostFieldsForRequest();
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
                 curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Length: ' . strlen($fields)));
-                curl_setopt($ch, CURLOPT_POST, 1); // Set HTTP Method as POST
+                curl_setopt($ch, CURLOPT_POST, 1);
             } else if ($this->method !== 'GET') {
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $this->method); 
                 if ($this->method === 'PUT') {
@@ -269,7 +269,7 @@ class Curl
             }
      
             if (count($this->headers) > 0) {
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers); // Set headers
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
             }
 
             // EXECUTE
