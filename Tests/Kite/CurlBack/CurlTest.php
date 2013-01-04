@@ -483,6 +483,22 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Kite\CurlBack\Curl::makeRequest
+     */
+    public function testMakeRequestWithGlobalUser()
+    {
+        $this->curl->setGlobalUser('TestUser');
+        $this->curl->setAddress('http://www.google.com');
+        $this->curl->makeRequest();
+
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertContains('User: TestUser', $this->curl->headers);
+        $this->assertEquals('GET', $this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
+    }
+
+    /**
      * @covers Kite\CurlBack\Curl::returnPostFieldsForRequest
      */
     public function testReturnPostFieldsForRequest()
