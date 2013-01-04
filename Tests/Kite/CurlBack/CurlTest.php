@@ -499,6 +499,17 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Kite\CurlBack\Curl::makeRequest
+     */
+    public function testMakeRequestWithError()
+    {
+        $this->curl->setAddress('http://404.php.net/');
+        $this->curl->makeRequest();
+
+        $this->assertEquals("ERROR -> 6: Couldn't resolve host '404.php.net'", $this->curl->returnResponse());
+    }
+
+    /**
      * @covers Kite\CurlBack\Curl::returnPostFieldsForRequest
      */
     public function testReturnPostFieldsForRequest()
