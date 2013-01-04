@@ -306,6 +306,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->curl->setAddress('http://www.google.com');
         $this->curl->makeRequest();
         $this->assertNotEmpty($this->curl->pastResponses);
+        $this->assertInternalType('array', $this->curl->returnSavedRequests());
     }
 
     /**
