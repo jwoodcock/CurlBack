@@ -416,6 +416,22 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Kite\CurlBack\Curl::returnPostFieldsForRequest
+     */
+    public function testReturnPostFieldsForRequest()
+    {
+        $postValues = array(
+            'foo' => 'bar',
+            'baz' => 1,
+            'qux' => 'Lorem ipsum dolar sit amet',
+        );
+        $postString = http_build_query($postValues);
+
+        $this->curl->setPostValue($postValues);
+        $this->assertEquals($postString, $this->curl->returnPostFieldsForRequest());
+    }
+
+    /**
      * @covers Kite\CurlBack\Curl::lookupHttpCode
      */
     public function testLookupHttpCode()

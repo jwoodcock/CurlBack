@@ -293,7 +293,7 @@ class Curl
         }
     }
 
-    private function returnPostFieldsForRequest()
+    public function returnPostFieldsForRequest()
     {
         $fields_string = '';
         foreach($this->postValues as $key=>$value) { 
