@@ -295,11 +295,7 @@ class Curl
 
     public function returnPostFieldsForRequest()
     {
-        $fields_string = '';
-        foreach($this->postValues as $key=>$value) { 
-            $fields_string .= $key.'='.$value.'&';
-        }
-        return $fields_string;
+        return http_build_query($this->postValues);
     }
 
     public function lookupHttpCode($lookUpCode = "")
