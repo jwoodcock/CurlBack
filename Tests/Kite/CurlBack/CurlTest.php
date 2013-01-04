@@ -406,7 +406,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Kite\CurlBack\Curl::makeRequest
      */
-    public function testMakeRequest()
+    public function testMakeRequestGet()
     {
         $this->assertEmpty($this->curl->makeRequest());
         $this->curl->setAddress('http://www.google.com');
@@ -415,6 +415,71 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("GET",$this->curl->method);
         $this->assertNotEmpty($this->curl->returnResponseInfo());
         $this->assertNotEmpty($this->curl->returnResponse());
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::makeRequest
+     */
+    public function testMakeRequestPost()
+    {
+        $postValues = array(
+            'foo' => 'bar',
+            'baz' => 1,
+            'qux' => 'Lorem ipsum dolar sit amet',
+        );
+
+        $this->curl->setAddress('http://httpbin.org/post');
+        $this->curl->changeToPost();
+        $this->curl->setPostValue($postValues);
+        $this->curl->makeRequest();
+
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertEquals('POST', $this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
+
+        $parsedResponse = json_decode($this->curl->returnResponse(), true);
+        $this->assertEquals($postValues, $parsedResponse['form']);
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::makeRequest
+     */
+    public function testMakeRequestDelete()
+    {
+        $this->curl->setAddress('http://httpbin.org/delete');
+        $this->curl->changeToDelete();
+        $this->curl->makeRequest();
+
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertEquals('DELETE', $this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::makeRequest
+     */
+    public function testMakeRequestPut()
+    {
+        $postValues = array(
+            'foo' => 'bar',
+            'baz' => 1,
+            'qux' => 'Lorem ipsum dolar sit amet',
+        );
+
+        $this->curl->setAddress('http://httpbin.org/put');
+        $this->curl->changeToPut();
+        $this->curl->setPostValue($postValues);
+        $this->curl->makeRequest();
+
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertEquals('PUT', $this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
+
+        $parsedResponse = json_decode($this->curl->returnResponse(), true);
+        $this->assertEquals($postValues, $parsedResponse['form']);
     }
 
     /**
