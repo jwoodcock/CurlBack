@@ -379,7 +379,6 @@ class Curl
         if ($lookUpCode) {
             return $httpCodes[$lookUpCode];
         } else if ($this->httpCode) {
-            echo 'in else';
             return $httpCodes[$this->httpCode];
         } else {
             return 'no value provided';
