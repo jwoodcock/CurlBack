@@ -323,6 +323,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Kite\CurlBack\Curl::replayRequest
+     * @covers Kite\CurlBack\Curl::saveRequest
      */
     public function testReplayRequest()
     {
@@ -336,6 +337,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Kite\CurlBack\Curl::replayRequest
+     * @covers Kite\CurlBack\Curl::saveRequest
      */
     public function testReplayRequestWithNonNumeric()
     {
