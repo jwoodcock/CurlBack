@@ -123,12 +123,13 @@ class Curl
         }
     }
 
-    public function get($address = null)
+    public function get($address = null, $getValues = Array(), $value = '')
     {
         if ($address) {
             $this->setAddress($address);
         }
 
+        $this->setGetValue($getValues, $value);
         $this->changeToGet();
         $this->makeRequest();
     }
@@ -373,7 +374,19 @@ class Curl
             }
 
             // Define CURL options
-            curl_setopt($ch, CURLOPT_URL, $this->address);
+            $urlVariables = "";
+            if (count($this->getValues) > 0) {
+                foreach ($this->getValues as $key => $value) {
+                    if ($urlVariables === "") {
+                        $urlVariables .= "?";
+                    } else {
+                        $urlVariables .= "&";
+                    }
+                    $urlVariables .= $key . "=" . urlencode($value);
+                }
+            }
+            $curlUrl = $this->address . $urlVariables;
+            curl_setopt($ch, CURLOPT_URL, $curlUrl);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
      
