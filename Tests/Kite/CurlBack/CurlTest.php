@@ -529,7 +529,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->curl->setAddress('http://404.php.net/');
         $this->curl->makeRequest();
 
-        $this->assertEquals("ERROR -> 6: Couldn't resolve host '404.php.net'", $this->curl->returnResponse());
+        $this->assertEquals("ERROR -> 6: Could not resolve host: 404.php.net; nodename nor servname provided, or not known", $this->curl->returnResponse());
     }
 
     /**
