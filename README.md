@@ -278,6 +278,8 @@ The $method will change the request method to your custom method.
 setHeader($name, $value)
 <pre>
 The $name will be the name of the header while $value is the value of that header.
+You can also just provide an array of headers in the name field to add bulk, just 
+leave the value field empty. 
 </pre>
 
 removeHeader($num)
