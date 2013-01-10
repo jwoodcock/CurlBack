@@ -123,6 +123,48 @@ class Curl
         }
     }
 
+    public function get($address = null)
+    {
+        if ($address) {
+            $this->setAddress($address);
+        }
+
+        $this->changeToGet();
+        $this->makeRequest();
+    }
+
+    public function post($address = null, $postValues = Array(), $value = '')
+    {
+        if ($address) {
+            $this->setAddress($address);
+        }
+
+        $this->setPostValue($postValues, $value);
+        $this->changeToPost();
+        $this->makeRequest();
+    }
+
+    public function put($address = null, $postValues = Array(), $value = '')
+    {
+        if ($address) {
+            $this->setAddress($address);
+        }
+
+        $this->setPostValue($postValues, $value);
+        $this->changeToPut();
+        $this->makeRequest();
+    }
+
+    public function delete($address = null)
+    {
+        if ($address) {
+            $this->setAddress($address);
+        }
+
+        $this->changeToDelete();
+        $this->makeRequest();
+    }
+
     public function setAddress($address)
     {
         $this->address = $address;
@@ -160,7 +202,7 @@ class Curl
         $this->method = 'POST';
     }
 
-    public function changeToPUT()
+    public function changeToPut()
     {
         $this->method = 'PUT';
     }
