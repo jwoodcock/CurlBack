@@ -55,13 +55,39 @@ returnHttpCode() returns just the response HTTP Code
 REQUEST METHOD
 --------------
 
-Like cURL, cURLBack is defaulted to use the GET method with requests but can change
+Like cURL, cURLBack is defaulted to use the GET method with requests but you may change
 the method using the changeToPost(), changeToDelete(), changeToPut() methods. There
-is also a custom changeToCustom() method for undocumented methods. 
+is also a changeToCustom() method for undocumented methods. 
 
 If you send POST variables, like cURL, cURLBack will automatically switch it's method
 to POST.
 
+CONVENIENCE METHODS
+-------------------
+
+cURLBack also has 4 convenience methods that allow you to build and make a request
+through one call. One for GET, POST, PUT and DELETE.
+
+These look like the following: 
+
+<pre>
+    <code>
+        $curl = new Curl;
+        $curl->post('http://www.example.com', array(
+            'foo' => 'bar'
+        ));
+
+        $curl->get('http://www.example.com', array(
+            'foo' => 'bar'
+        ));
+
+        $curl->put('http://www.example.com', array(
+            'foo' => 'bar'
+        ));
+
+        $curl->delete('http://www.example.com');
+    </code>
+</pre>
 
 SAVING REQUESTS
 ---------------
