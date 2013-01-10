@@ -197,6 +197,29 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * For multiple header entries 
+     * @covers Kite\CurlBack\Curl::setHeader
+     */
+    public function testSetMultipleHeaders()
+    {
+        $headers = array(   
+            'Content-type'=>'application/html',
+            'X-awesome-sauce'=>'tasty',
+        );
+        $this->assertEmpty($this->curl->setHeader($headers));
+        $this->assertEquals(2,$this->curl->returnHeaderCount());
+        
+        $curlHeaders = array();
+        foreach ($headers as $key => $value) {
+            $curlHeaders[] = "" . $key . ": " . $value;
+        }
+        $this->assertEquals(
+            $curlHeaders,
+            $this->curl->headers
+        );
+    }
+
+    /**
      * @covers Kite\CurlBack\Curl::removeHeader
      */
     public function testRemoveHeader()
