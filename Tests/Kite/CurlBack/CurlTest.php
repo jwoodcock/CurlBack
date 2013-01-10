@@ -141,7 +141,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kite\CurlBack\Curl::changeToPUT
+     * @covers Kite\CurlBack\Curl::changeToPut
      */
     public function testChangeToPUT()
     {
@@ -162,7 +162,6 @@ class CurlTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Kite\CurlBack\Curl::changeToGet
-     * @todo   Implement testChangeToGet().
      */
     public function testChangeToGet()
     {
@@ -320,6 +319,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers Kite\CurlBack\Curl::makeRequest
      * @covers Kite\CurlBack\Curl::returnSavedRequests
      */
     public function testReturnSavedRequests()
@@ -558,5 +558,76 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->curl->makeRequest();
         $this->assertEquals("200 OK", $this->curl->lookupHttpCode());
         $this->assertEquals("204 No Content", $this->curl->lookupHttpCode(204));
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::get
+     */
+    public function testGetMethod()
+    {
+        $this->curl->changeToPost();
+        $this->curl->get('http://www.google.com');
+
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertEquals('GET',$this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::post
+     */
+    public function testPostMethod()
+    {
+        $params = array(
+            'foo' => 'bar',
+            'baz' => 1,
+            'qux' => 'Lorem ipsum dolar sit amet',
+        );
+
+        $this->curl->post('http://httpbin.org/post', $params);
+
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertEquals('POST', $this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
+
+        $parsedResponse = json_decode($this->curl->returnResponse(), true);
+        $this->assertEquals($params, $parsedResponse['form']);
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::put
+     */
+    public function testPutMethod()
+    {
+        $params = array(
+            'foo' => 'bar',
+            'baz' => 1,
+            'qux' => 'Lorem ipsum dolar sit amet',
+        );
+
+        $this->curl->put('http://httpbin.org/put', $params);
+
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertEquals('PUT', $this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
+
+        $parsedResponse = json_decode($this->curl->returnResponse(), true);
+        $this->assertEquals($params, $parsedResponse['form']);
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::delete
+     */
+    public function testDeleteMethod()
+    {
+        $this->curl->delete('http://httpbin.org/delete');
+
+        $this->assertNotEmpty($this->curl->headers);
+        $this->assertEquals('DELETE', $this->curl->method);
+        $this->assertNotEmpty($this->curl->returnResponseInfo());
+        $this->assertNotEmpty($this->curl->returnResponse());
     }
 }
