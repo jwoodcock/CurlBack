@@ -222,9 +222,15 @@ class Curl
         $this->method = $method;
     }
 
-    public function setHeader($name, $value)
+    public function setHeader($name, $value = "")
     {
-        $this->headers[] = $name . ": " .$value;
+        if (is_array($name) === false) {
+            $this->headers[] = $name . ": " .$value;
+        } else {
+            foreach ($name as $key => $val) {
+                $this->headers[] = $key . ": " . $val;
+            }
+        }
     }
 
     public function removeHeader($num)
