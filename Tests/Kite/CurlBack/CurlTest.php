@@ -565,13 +565,22 @@ class CurlTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethod()
     {
-        $this->curl->changeToPost();
-        $this->curl->get('http://www.google.com');
+        $params = array(
+            'foo' => 'bar',
+            'baz' => 1,
+            'qux' => 'Lorem ipsum dolar sit amet',
+        );
+
+        $this->curl->changeToGet();
+        $this->curl->get('http://www.httpbin.org/get', $params);
 
         $this->assertNotEmpty($this->curl->headers);
         $this->assertEquals('GET',$this->curl->method);
         $this->assertNotEmpty($this->curl->returnResponseInfo());
         $this->assertNotEmpty($this->curl->returnResponse());
+        
+        $parsedResponse = json_decode($this->curl->returnResponse(), true);
+        $this->assertEquals($params, $parsedResponse['args']);
     }
 
     /**
