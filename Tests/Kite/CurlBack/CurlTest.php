@@ -526,10 +526,10 @@ class CurlTest extends \PHPUnit_Framework_TestCase
      */
     public function testMakeRequestWithError()
     {
-        $this->curl->setAddress('http://404.php.net/');
+        $this->curl->setAddress('http://www.httpbin.org/404');
         $this->curl->makeRequest();
 
-        $this->assertEquals("ERROR -> 6: Could not resolve host: 404.php.net; nodename nor servname provided, or not known", $this->curl->returnResponse());
+        $this->assertEquals("404", $this->curl->returnHttpCode());
     }
 
     /**
