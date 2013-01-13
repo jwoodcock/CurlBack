@@ -225,23 +225,32 @@ class Curl
 
     public function setHeader($name, $value = "")
     {
-        if (is_array($name) === false) {
-            $this->headers[] = $name . ": " .$value;
+        if (is_array($name)) {
+            $this->headers = array_merge($this->headers, $name);
         } else {
-            foreach ($name as $key => $val) {
-                $this->headers[] = $key . ": " . $val;
-            }
+            $this->headers[$name] = $value;
         }
     }
 
-    public function removeHeader($num)
+    public function removeHeader($index)
     {
-        unset($this->headers[$num]);
+        if (is_integer($index)) {
+            $keys = array_keys($this->headers);
+            $index = $keys[$index];
+        }
+
+        unset($this->headers[$index]);
     }
 
     public function resetHeader($num, $name, $value)
     {
-        $this->headers[$num] = $name . ": " . $value;
+        $keys = array_keys($this->headers);
+        $vals = array_values($this->headers);
+
+        $keys[$num] = $name;
+        $vals[$num] = $value;
+
+        $this->headers = array_combine($keys, $vals);
     }
 
     public function returnHeaderCount()
@@ -399,7 +408,12 @@ class Curl
             }
      
             if (count($this->headers) > 0) {
-                curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
+                $headers = array();
+                foreach ($this->headers as $key => $value) {
+                    $headers[] = $key . ": " . $value;
+                }
+
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             }
 
             // EXECUTE
