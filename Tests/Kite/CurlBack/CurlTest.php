@@ -191,7 +191,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
             $this->curl->setHeader('Content-type','application/html')
         );
         $this->assertEquals(
-            array('Content-type: application/html'),$this->curl->headers
+            array('Content-type' => 'application/html'),$this->curl->headers
         );
     }
 
@@ -208,12 +208,8 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($this->curl->setHeader($headers));
         $this->assertEquals(2,$this->curl->returnHeaderCount());
         
-        $curlHeaders = array();
-        foreach ($headers as $key => $value) {
-            $curlHeaders[] = "" . $key . ": " . $value;
-        }
         $this->assertEquals(
-            $curlHeaders,
+            $headers,
             $this->curl->headers
         );
     }
@@ -221,16 +217,32 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers Kite\CurlBack\Curl::removeHeader
      */
-    public function testRemoveHeader()
+    public function testRemoveHeaderByIndex()
     {
         $this->assertEmpty(
             $this->curl->setHeader('Content-type','application/html')
         );
         $this->assertEquals(
-            array('Content-type: application/html'),
+            array('Content-type' => 'application/html'),
             $this->curl->headers
         );
         $this->curl->removeHeader(0);
+        $this->assertEmpty($this->curl->headers);
+    }
+
+    /**
+     * @covers Kite\CurlBack\Curl::removeHeader
+     */
+    public function testRemoveHeaderByName()
+    {
+        $this->assertEmpty(
+            $this->curl->setHeader('Content-type','application/html')
+        );
+        $this->assertEquals(
+            array('Content-type' => 'application/html'),
+            $this->curl->headers
+        );
+        $this->curl->removeHeader('Content-type');
         $this->assertEmpty($this->curl->headers);
     }
 
@@ -243,12 +255,12 @@ class CurlTest extends \PHPUnit_Framework_TestCase
             $this->curl->setHeader('Content-type','application/html')
         );
         $this->assertEquals(
-            array('Content-type: application/html'),
+            array('Content-type' => 'application/html'),
             $this->curl->headers
         );
         $this->curl->resetHeader(0,'Content-type','application/json');
         $this->assertEquals(
-            array('Content-type: application/json'),
+            array('Content-type' => 'application/json'),
             $this->curl->headers
         );
     }
@@ -339,7 +351,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->curl->setBasicAuth('username','password'));
         $this->assertEquals(
-            array('Authorization: username:password' ),
+            array('Authorization' => 'username:password' ),
             $this->curl->headers
         );
     }
@@ -515,7 +527,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->curl->makeRequest();
 
         $this->assertNotEmpty($this->curl->headers);
-        $this->assertContains('User: TestUser', $this->curl->headers);
+        $this->assertEquals('TestUser', $this->curl->headers['User']);
         $this->assertEquals('GET', $this->curl->method);
         $this->assertNotEmpty($this->curl->returnResponseInfo());
         $this->assertNotEmpty($this->curl->returnResponse());
