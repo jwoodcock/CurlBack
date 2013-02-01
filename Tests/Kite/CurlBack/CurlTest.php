@@ -303,8 +303,8 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testReturnResponse()
     {
         $this->assertEmpty($this->curl->returnResponse());
-        $this->curl->setAddress('http://www.google.com');
-        $this->curl->makeRequest();
+        $this->curl->setAddress('http://www.kitportal.com');
+        $response = $this->curl->makeRequest();
         $this->assertNotEmpty($this->curl->returnResponse());
     }
 
@@ -340,7 +340,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->curl->storeRequests = true;
         $this->curl->setAddress('http://www.google.com');
         $this->curl->makeRequest();
-        $this->assertNotEmpty($this->curl->pastResponses);
+        $this->assertNotEmpty($this->curl->requestStorage->requests);
         $this->assertInternalType('array', $this->curl->returnSavedRequests());
     }
 
@@ -367,7 +367,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->curl->setAddress('http://www.google.com');
         $this->curl->makeRequest();
         $this->curl->replayRequest(0);
-        $this->assertEquals(2,count($this->curl->pastResponses));
+        $this->assertEquals(2,count($this->curl->requestStorage->requests));
     }
 
     /**
@@ -381,7 +381,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $this->curl->setAddress('http://www.google.com');
         $this->curl->makeRequest();
         $this->assertEmpty($this->curl->replayRequest('foo'));
-        $this->assertEquals(1, count($this->curl->pastResponses));
+        $this->assertEquals(1, count($this->curl->requestStorage->requests));
     }
 
     /**
