@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /*
  * CURLBack is a simple cURL wrapper that allows storing of past requests for 
