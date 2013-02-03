@@ -32,10 +32,10 @@ class BatchHandler
         "method"
     );
 
-    public function __construct($requests)
+    public function __construct($requests, $curl)
     {
         $this->processBatchObj($requests);
-        $this->requestHandler = new Curl("", true);
+        $this->requestHandler = $curl;
     }
 
     public function processBatchObj($requests)
@@ -49,7 +49,7 @@ class BatchHandler
 
     public function addRequest($request, $position = 0)
     {
-        $this->verifyRequest($request,$position);
+        $this->verifyRequest($request, $position);
         if (isset($this->error[0]) === false) {
             $this->masterRequestList[] = $request[0];
         } else {
@@ -111,7 +111,8 @@ class BatchHandler
 
             foreach ($this->_requiredKeys as $key) {
                 if (array_key_exists($key, $request[0]) === false) {
-                    $this->error[$position][] = "Your request is missing a required field - " . $key;
+                    $this->error[$position][] = "Your request is missing a "
+                        . "required field - " . $key;
                 }
             }
 
