@@ -131,48 +131,6 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Kite\CurlBack\Curl::changeToPost
-     */
-    public function testChangeToPost()
-    {
-        $this->assertEquals("GET",$this->curl->method);
-        $this->curl->changeToPost();
-        $this->assertEquals("POST",$this->curl->method);
-    }
-
-    /**
-     * @covers Kite\CurlBack\Curl::changeToPut
-     */
-    public function testChangeToPUT()
-    {
-        $this->assertEquals("GET",$this->curl->method);
-        $this->curl->changeToPut();
-        $this->assertEquals("PUT",$this->curl->method);
-    }
-
-    /**
-     * @covers Kite\CurlBack\Curl::changeToDelete
-     */
-    public function testChangeToDelete()
-    {
-        $this->assertEquals("GET",$this->curl->method);
-        $this->curl->changeToDelete();
-        $this->assertEquals("DELETE",$this->curl->method);
-    }
-
-    /**
-     * @covers Kite\CurlBack\Curl::changeToGet
-     */
-    public function testChangeToGet()
-    {
-        $this->assertEquals("GET",$this->curl->method);
-        $this->curl->changeToPut();
-        $this->assertEquals("PUT",$this->curl->method);
-        $this->curl->changeToGet();
-        $this->assertEquals("GET",$this->curl->method);
-    }
-
-    /**
      * @covers Kite\CurlBack\Curl::customMethod
      */
     public function testCustomMethod()
@@ -464,7 +422,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->curl->setAddress('http://httpbin.org/post');
-        $this->curl->changeToPost();
+        $this->curl->method = "POST";
         $this->curl->setPostValue($postValues);
         $this->curl->makeRequest();
 
@@ -483,7 +441,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testMakeRequestDelete()
     {
         $this->curl->setAddress('http://httpbin.org/delete');
-        $this->curl->changeToDelete();
+        $this->curl->method = "DELETE";
         $this->curl->makeRequest();
 
         $this->assertNotEmpty($this->curl->headers);
@@ -504,7 +462,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->curl->setAddress('http://httpbin.org/put');
-        $this->curl->changeToPut();
+        $this->curl->method = "PUT";
         $this->curl->setPostValue($postValues);
         $this->curl->makeRequest();
 
@@ -583,7 +541,6 @@ class CurlTest extends \PHPUnit_Framework_TestCase
             'qux' => 'Lorem ipsum dolar sit amet',
         );
 
-        $this->curl->changeToGet();
         $this->curl->get('http://www.httpbin.org/get', $params);
 
         $this->assertNotEmpty($this->curl->headers);
