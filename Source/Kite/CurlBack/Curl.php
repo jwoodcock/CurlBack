@@ -115,11 +115,9 @@ class Curl
         if ($address) {
             $this->setAddress($address);
         }
-
+        $this->storeRequests = false;
         if ($storeRequests === true) {
             $this->storeRequests = true;
-        } else {
-            $this->storeRequests = false;
         }
     }
 
@@ -130,7 +128,7 @@ class Curl
         }
 
         $this->setGetValue($getValues, $value);
-        $this->changeToGet();
+        $this->method = 'GET';
         $this->makeRequest();
     }
 
@@ -141,7 +139,7 @@ class Curl
         }
 
         $this->setPostValue($postValues, $value);
-        $this->changeToPost();
+        $this->method = 'POST';
         $this->makeRequest();
     }
 
@@ -152,7 +150,7 @@ class Curl
         }
 
         $this->setPostValue($postValues, $value);
-        $this->changeToPut();
+        $this->method = 'PUT';
         $this->makeRequest();
     }
 
@@ -161,8 +159,7 @@ class Curl
         if ($address) {
             $this->setAddress($address);
         }
-
-        $this->changeToDelete();
+        $this->method = 'DELETE';
         $this->makeRequest();
     }
 
@@ -196,26 +193,6 @@ class Curl
                 $this->postValues[$key] = $val;
             }
         }
-    }
-
-    public function changeToPost()
-    {
-        $this->method = 'POST';
-    }
-
-    public function changeToPut()
-    {
-        $this->method = 'PUT';
-    }
-
-    public function changeToDelete()
-    {
-        $this->method = 'DELETE';
-    }
-
-    public function changeToGet()
-    {
-        $this->method = 'GET';
     }
 
     public function customMethod($method)
