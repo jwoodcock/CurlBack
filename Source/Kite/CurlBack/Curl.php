@@ -176,14 +176,21 @@ class Curl
         echo $this->address;
     }
 
+    private function setValues($valueArray)
+    {
+        $values = array();
+        foreach($valueArray as $key=>$value) {
+            $values[$key] = $value;
+        }
+        return $values;
+    }
+
     public function setGetValue($name, $value = "")
     {
         if (is_array($name) === false) {
             $this->getValues[$name] = $value;
         } else {
-            foreach ($name as $key => $val) {
-                $this->getValues[$key] = $val;
-            }
+            $this->getValues = $this->setValues($name);
         }
     }
 
@@ -192,9 +199,7 @@ class Curl
         if (is_array($name) === false) {
             $this->postValues[$name] = $value;
         } else {
-            foreach ($name as $key => $val) {
-                $this->postValues[$key] = $val;
-            }
+            $this->postValues = $this->setValues($name);
         }
     }
 
