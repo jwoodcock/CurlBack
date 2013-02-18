@@ -303,7 +303,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testReturnResponse()
     {
         $this->assertEmpty($this->curl->returnResponse());
-        $this->curl->setAddress('http://www.kitportal.com');
+        $this->curl->setAddress('http://httpbin.org');
         $response = $this->curl->makeRequest();
         $this->assertNotEmpty($this->curl->returnResponse());
     }
@@ -314,7 +314,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testReturnHttpCode()
     {
         $this->assertEmpty($this->curl->returnHttpCode());
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $this->assertEquals('200',$this->curl->returnHttpCode());
     }
@@ -325,7 +325,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testReturnResponseInfo()
     {
         $this->assertEmpty($this->curl->returnResponseInfo());
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $this->assertNotEmpty($this->curl->returnResponseInfo());
     }
@@ -338,7 +338,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->curl->pastResponses);
         $this->curl->storeRequests = true;
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $this->assertNotEmpty($this->curl->requestStorage->requests);
         $this->assertInternalType('array', $this->curl->returnSavedRequests());
@@ -364,7 +364,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->curl->pastResponses);
         $this->curl->storeRequests = true;
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $this->curl->replayRequest(0);
         $this->assertEquals(2,count($this->curl->requestStorage->requests));
@@ -378,7 +378,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->curl->pastResponses);
         $this->curl->storeRequests = true;
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $this->assertEmpty($this->curl->replayRequest('foo'));
         $this->assertEquals(1, count($this->curl->requestStorage->requests));
@@ -391,12 +391,12 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->curl->returnRequestList());
         $this->curl->storeRequests = true;
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $this->curl->setAddress('http://www.yahoo.com');
         $this->curl->makeRequest();
         $this->assertEquals(
-            array("http://www.google.com","http://www.yahoo.com"),
+            array("http://httpbin.org","http://www.yahoo.com"),
             $this->curl->returnRequestList()
         );
     }
@@ -408,7 +408,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->curl->returnRequestListWithTimes());
         $this->curl->storeRequests = true;
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $time1 = date("Y/m/d h:i:s");
         $this->curl->setAddress('http://www.yahoo.com');
@@ -416,7 +416,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
         $time2 = date("Y/m/d h:i:s");
         $this->assertEquals(
             array(
-                $time1 . " http://www.google.com",
+                $time1 . " http://httpbin.org",
                 $time2 . " http://www.yahoo.com"
             ),
             $this->curl->returnRequestListWithTimes()
@@ -430,7 +430,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEmpty($this->curl->resetStoredResponses());
         $this->curl->storeRequests = true;
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $this->curl->setAddress('http://www.yahoo.com');
         $this->curl->makeRequest();
@@ -444,7 +444,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testMakeRequestGet()
     {
         $this->assertEmpty($this->curl->makeRequest());
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $response = $this->curl->makeRequest();
         $this->assertNotEmpty($this->curl->headers);
         $this->assertEquals("GET",$this->curl->method);
@@ -523,7 +523,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testMakeRequestWithGlobalUser()
     {
         $this->curl->setGlobalUser('TestUser');
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
 
         $this->assertNotEmpty($this->curl->headers);
@@ -566,7 +566,7 @@ class CurlTest extends \PHPUnit_Framework_TestCase
     public function testLookupHttpCode()
     {
         $this->assertEquals('no value provided', $this->curl->lookupHttpCode());
-        $this->curl->setAddress('http://www.google.com');
+        $this->curl->setAddress('http://httpbin.org');
         $this->curl->makeRequest();
         $this->assertEquals("200 OK", $this->curl->lookupHttpCode());
         $this->assertEquals("204 No Content", $this->curl->lookupHttpCode(204));
