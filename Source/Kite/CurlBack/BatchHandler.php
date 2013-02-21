@@ -81,7 +81,7 @@ class BatchHandler
             $this->requestHandler->setHeader($currentObject['headers']);
         }
         if (isset($currentObject['accept'])) {
-            $this->requestHandler->setGlobalAccept($currentObject['headers']);
+            $this->requestHandler->setGlobalAccept($currentObject['accept']);
         }
         if (isset($currentObject['user'])) {
             $this->requestHandler->setGlobalUser($currentObject['user']);
