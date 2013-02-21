@@ -202,6 +202,94 @@ propurses. Simply set the $this->globalUser using the setGlobalUser() method.
     </code>
 </pre>
 
+BATCH REQUESTS
+==============
+cURLBack also supports batch processing of requests using an instance of the
+main Curl object.  
+
+<pre>
+    <code>
+        $requests = array(
+            array(
+                "address"=>"http://www.kitewebconsulting.com",
+                "method"=>"GET",
+            )
+        );
+
+        $curl = new Curl("", true);
+        $batchRequest = new BatchHandler($requests, $curl);
+        $batchRequest->processRequests();
+</pre>
+
+The BatchHandler has a expanded interface as well for multiple methods
+for interactions. Here is a list of all it's methods.
+
+__construct($requests, $curl)
+The $requests is an array holder requests arrays. See following section
+for structure and requirements. 
+
+The $curl is an instance of the $curl object to make request and store
+responses. 
+
+processBatchObj($requests)
+If you want to add the requests after the BatchHandler object has been
+instantiated you can use this method to pass in the request object. 
+
+addRequest($request, $position)
+This method allows you to add requests one at a time. The $request object
+is an array with a single request array within it and the $position is 
+optional but can be used to write over existing requests. 
+
+clearRequests()
+Empties all the stored requests. 
+
+processRequests($current)
+This is the main method for calling the requests and once called will 
+loop through the request object until the last request is made. 
+
+returnResponses()
+Instead of having to call your $curl object to get all the responses
+a shortcut has been setup so you can call them using the $batchHandler
+object. 
+
+$requests Object Structure
+Here is a list of the fields you can pass and which are required or optional.
+<pre>
+    address     (string - required)
+    method      (string - required)
+    getValues   (key value array - optional)
+    postValues  (key value array - optional)
+    headers     (key value array - optional)
+    accept      (string - optional) 
+    user        (string - optional)
+    un          (string - required if pw is set)
+    pw          (string - required if un is set)
+
+    So a request with full options would look like this:
+    <code>
+        $requests = array(
+            array(
+                "address"=>"http://www.kitportal.com",
+                "method"=>"GET",
+                "getValues"=>array(
+                    "key"=>"val"
+                )
+                "postValues"=>array(
+                    "key"=>"val"
+                )
+                "headers"=>array(
+                    "key"=>"val"
+                )
+                "accept"=>"application/json",
+                "user"=>"myUser",
+                "un"=>"username",
+                "pw"=>"password",
+            )
+        );
+    </code>
+</pre>
+
+
 PUBLIC PROPERTIES
 =================
 
