@@ -34,7 +34,9 @@ class BatchHandler
 
     public function __construct($requests, $curl)
     {
-        $this->processBatchObj($requests);
+        if ($requests && is_array($requests)) {
+            $this->processBatchObj($requests);
+        }
         $this->requestHandler = $curl;
     }
 
