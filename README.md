@@ -221,8 +221,8 @@ main Curl object.
         $batchRequest->processRequests();
 </pre>
 
-The BatchHandler has a expanded interface as well for multiple methods
-for interactions. Here is a list of all it's methods.
+The BatchHandler has an expanded interface as well for multiple methods
+of interactions. Here is a list of all available methods.
 
 __construct($requests, $curl)
 The $requests is an array holder requests arrays. See following section
