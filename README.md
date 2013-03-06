@@ -15,7 +15,7 @@ You can use Composer to install CurlBack.
     <code>
         {
             "require": {
-                "kite\curlback": "1.*"
+                "kite/curlback": "1.*"
             }
         }
     </code>
