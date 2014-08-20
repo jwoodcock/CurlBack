@@ -346,11 +346,18 @@ variables and values. $value is only used if $name is a variable string and hold
 the value of that variable. 
 </pre>
 
-setPostValue($name, $value)
+setPostValue($name, $value = '', $json = false)
 <pre>
 The $name property can either be a string for the variable name or an array of 
 variables and values. $value is only used if $name is a variable string and holds
-the value of that variable. 
+the value of that variable, unless you want to post a json object which case you
+will set the object as the $value and set $json to true.
+
+Example:
+<code>
+    $jsonObj = '{"hi":"friend"}';
+    $request->setPostValue('', $jsonObj, true);
+</code>
 </pre>
 
 changeToPost()
