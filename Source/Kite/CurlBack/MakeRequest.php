@@ -32,7 +32,7 @@ class MakeRequest
         $response = Array();
 
         // Initiate CURL object
-        $ch = curl_init();
+        $ch = \curl_init();
 
         // Define CURL options
         $urlVariables = "";
