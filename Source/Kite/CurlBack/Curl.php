@@ -130,10 +130,12 @@ class Curl
         }
     }
 
-    public function setPostValue($name, $value = "")
+    public function setPostValue($name, $value = "", $json = false)
     {
-        if (is_array($name) === false) {
+        if (is_array($name) === false && $json === false) {
             $this->postValues[$name] = $value;
+        } elseif ($json === true) {
+            $this->postValues = $value;
         } else {
             $this->postValues = $this->setValues($name);
         }
@@ -341,6 +343,8 @@ class Curl
     {
         if (is_array($this->postValues)) {
             return http_build_query($this->postValues);
+        } else {
+            return $this->postValues;
         }
     }
 
