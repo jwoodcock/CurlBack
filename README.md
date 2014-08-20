@@ -354,7 +354,7 @@ the value of that variable, unless you want to post a json object which case you
 will set the object as the $value and set $json to true.
 
 Example:
-<code>
+<code type="php">
     $jsonObj = '{"hi":"friend"}';
     $request->setPostValue('', $jsonObj, true);
 </code>
